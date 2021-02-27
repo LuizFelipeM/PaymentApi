@@ -26,3 +26,7 @@ payment_api-*.tar
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
 /priv/static/
+
+*.beam
+/config/*.secret.exs
+.elixir_ls/
