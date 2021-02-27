@@ -1,9 +1,10 @@
 defmodule PaymentApi do
-  @moduledoc """
-  PaymentApi keeps the contexts that define your domain
-  and business logic.
+  alias PaymentApi.Users.Create, as: UserCreate
+  alias PaymentApi.Accounts.{Deposit, Withdraw, Transaction}
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  defdelegate create_user(params), to: UserCreate, as: :call
+
+  defdelegate deposit(params), to: Deposit, as: :call
+  defdelegate withdraw(params), to: Withdraw, as: :call
+  defdelegate transaction(params), to: Transaction, as: :call
 end

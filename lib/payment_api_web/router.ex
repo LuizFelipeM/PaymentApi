@@ -1,14 +1,30 @@
 defmodule PaymentApiWeb.Router do
   use PaymentApiWeb, :router
 
+  import Plug.BasicAuth
+
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :auth do
+    plug :basic_auth, Application.compile_env(:payment_api, :basic_auth)
   end
 
   scope "/api", PaymentApiWeb do
     pipe_through :api
 
     get "/:filename", WelcomeController, :index
+
+    post "/users", UsersController, :create
+  end
+
+  scope "/api", PaymentApiWeb do
+    pipe_through [:api, :auth]
+
+    post "/accounts/:id/deposit", AccountsController, :deposit
+    post "/accounts/:id/withdraw", AccountsController, :withdraw
+    post "/accounts/transaction", AccountsController, :transaction
   end
 
   # Enables LiveDashboard only for development
